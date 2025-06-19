@@ -1,7 +1,6 @@
-import * as React from "react";
+import { BadgeProps } from "@/types/types";
 import { clsx as cn } from "clsx";
-
-export interface BadgeProps extends React.HTMLAttributes<HTMLDivElement> {}
+import * as React from "react";
 
 export const Badge = React.forwardRef<HTMLDivElement, BadgeProps>(
   ({ className, children, ...props }, ref) => {

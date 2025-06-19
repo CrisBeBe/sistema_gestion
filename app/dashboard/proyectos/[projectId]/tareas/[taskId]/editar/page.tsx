@@ -1,16 +1,8 @@
 "use client";
 
+import { TaskData } from "@/types/types";
 import React, { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import { format } from "date-fns";
-
-interface TaskData {
-  nombre: string;
-  descripcion: string;
-  estado: "pendiente" | "en progreso" | "completada" | "rechazada" | "cancelada";
-  prioridad: "baja" | "media" | "alta";
-  fecha_limite: string | null;
-}
+import { useParams } from "react-router-dom";
 
 const EditTaskPage = () => {
   const { projectId, taskId } = useParams();
@@ -19,7 +11,7 @@ const EditTaskPage = () => {
     descripcion: "",
     estado: "pendiente",
     prioridad: "media",
-    fecha_limite: "",
+    fecha_limite: null,
   });
 
   const [loading, setLoading] = useState(true);
@@ -36,9 +28,7 @@ const EditTaskPage = () => {
           descripcion: data.descripcion,
           estado: data.estado,
           prioridad: data.prioridad,
-          fecha_limite: data.fecha_limite
-            ? format(new Date(data.fecha_limite), "yyyy-MM-dd'T'HH:mm")
-            : "",
+          fecha_limite: data.fecha_limite,
         });
         setLoading(false);
       } catch (err) {
@@ -50,7 +40,11 @@ const EditTaskPage = () => {
     fetchTask();
   }, [projectId, taskId]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -79,13 +73,17 @@ const EditTaskPage = () => {
     }
   };
 
-  if (loading) return <p className="p-6 text-sm text-gray-500">Cargando tarea...</p>;
+  if (loading)
+    return <p className="p-6 text-sm text-gray-500">Cargando tarea...</p>;
   if (error) return <p className="p-6 text-red-600">{error}</p>;
 
   return (
     <div className="p-6 max-w-2xl mx-auto">
       <h1 className="text-2xl font-bold mb-4">Editar Tarea</h1>
-      <form onSubmit={handleSubmit} className="space-y-5 bg-white p-6 rounded-xl shadow-sm">
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-5 bg-white p-6 rounded-xl shadow-sm"
+      >
         <div>
           <label className="text-sm font-medium">Nombre de la tarea</label>
           <input
@@ -136,7 +134,6 @@ const EditTaskPage = () => {
             <option value="baja">Baja</option>
             <option value="media">Media</option>
             <option value="alta">Alta</option>
-
           </select>
         </div>
 
@@ -145,7 +142,7 @@ const EditTaskPage = () => {
           <input
             type="datetime-local"
             name="fecha_limite"
-            value={formData.fecha_limite || ""}
+            value={formData.fecha_limite?.toLocaleDateString()}
             onChange={handleChange}
             className="w-full border px-4 py-2 rounded-lg mt-1 text-sm"
           />

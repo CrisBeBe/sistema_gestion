@@ -1,11 +1,8 @@
 "use client";
 
-import * as React from "react";
+import { ProgressProps } from "@/types/types";
 import { clsx as cn } from "clsx";
-
-export interface ProgressProps extends React.HTMLAttributes<HTMLDivElement> {
-  value?: number; // de 0 a 100
-}
+import * as React from "react";
 
 export const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
   ({ className, value = 0, ...props }, ref) => {

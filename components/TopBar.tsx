@@ -1,14 +1,12 @@
 "use client";
 
-import React from "react";
 import { Bell, ChevronDown } from "lucide-react";
+import { useSession } from "next-auth/react";
 
-interface TopbarProps {
-  userName: string;
-}
-
-export const Topbar: React.FC<TopbarProps> = ({ userName }) => {
-  const initial = userName?.charAt(0).toUpperCase() || "?";
+export default function TopBar() {
+  const { data } = useSession();
+  const userName = data?.user?.name || "";
+  const initial = userName.charAt(0).toUpperCase() || "?";
 
   return (
     <header className="w-full h-16 bg-white border-b shadow-sm flex items-center justify-between px-4 md:px-6">
@@ -35,4 +33,4 @@ export const Topbar: React.FC<TopbarProps> = ({ userName }) => {
       </div>
     </header>
   );
-};
+}
