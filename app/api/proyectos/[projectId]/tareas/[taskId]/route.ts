@@ -52,7 +52,7 @@ export async function GET(
     );
 
     await connection.end();
- 
+   
     if (!rows || rows.length === 0) {
       return NextResponse.json({ message: "Tarea no encontrada" }, { status: 404 });
     }

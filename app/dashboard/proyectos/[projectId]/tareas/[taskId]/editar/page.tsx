@@ -136,7 +136,7 @@ const EditTaskPage = () => {
             <option value="baja">Baja</option>
             <option value="media">Media</option>
             <option value="alta">Alta</option>
-            <option value="critica">Crítica</option>
+
           </select>
         </div>
 
