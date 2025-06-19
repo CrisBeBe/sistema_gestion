@@ -1,25 +1,20 @@
 "use client";
 
-import React from "react";
+import { clsx as cn } from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { clsx as cn } from "clsx";
 
-
+import { SidebarProps } from "@/types/types";
 import {
-  Home,
-  FolderKanban,
-  Users,
   BarChart3,
+  FolderKanban,
+  Home,
+  LogOut,
   MessageSquare,
   Settings,
-  LogOut,
+  Users,
 } from "lucide-react";
-
-interface SidebarProps {
-  currentPath?: string;
-  isCollapsed?: boolean;
-}
+import { signOut } from "next-auth/react";
 
 const links = [
   { name: "Dashboard", href: "/dashboard", icon: Home },
@@ -30,9 +25,16 @@ const links = [
   { name: "Configuración", href: "/dashboard/configuracion", icon: Settings },
 ];
 
-export const Sidebar: React.FC<SidebarProps> = ({ currentPath, isCollapsed = false }) => {
+export default function Sidebar({
+  currentPath,
+  isCollapsed = false,
+}: SidebarProps) {
   const pathname = usePathname();
   const activePath = currentPath || pathname;
+
+  const handleLogout = () => {
+    signOut({ callbackUrl: "/login" }); // Redirige después de cerrar sesión
+  };
 
   return (
     <aside
@@ -42,7 +44,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPath, isCollapsed = fal
       )}
     >
       <div className="p-4">
-        <h2 className={cn("text-xl font-bold mb-6 transition-opacity", isCollapsed && "opacity-0")}>
+        <h2
+          className={cn(
+            "text-xl font-bold mb-6 transition-opacity",
+            isCollapsed && "opacity-0"
+          )}
+        >
           BPM System
         </h2>
         <nav className="flex flex-col gap-2">
@@ -62,11 +69,14 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPath, isCollapsed = fal
         </nav>
       </div>
       <div className="p-4">
-        <button className="flex items-center gap-3 w-full text-left hover:text-red-400">
+        <button
+          className="flex items-center gap-3 w-full text-left hover:text-red-400"
+          onClick={handleLogout}
+        >
           <LogOut size={20} />
           {!isCollapsed && <span>Cerrar sesión</span>}
         </button>
       </div>
     </aside>
   );
-};
+}

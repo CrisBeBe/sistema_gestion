@@ -1,21 +1,11 @@
 "use client";
 
-import React from "react";
-import { useRouter } from "next/navigation";
-import { Badge } from "@components/Badge";
+import { Badge } from "@/components/Badge";
+import { TaskItemProps } from "@/types/types";
 import { clsx as cn } from "clsx";
 import { PencilIcon } from "lucide-react";
-
-interface TaskItemProps {
-  title: string;
-  assignedTo: string;
-  status: "pendiente" | "en progreso" | "completado";
-  priority: "alta" | "media" | "baja";
-  onToggle: () => void;
-  completed?: boolean;
-  taskId: string; // ID de la tarea para redirección
-  projectId: string; // ID del proyecto al que pertenece
-}
+import { useRouter } from "next/navigation";
+import React from "react";
 
 export const TaskItem: React.FC<TaskItemProps> = ({
   title,

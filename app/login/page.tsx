@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const LoginPage = () => {
   const router = useRouter();
@@ -13,22 +14,16 @@ const LoginPage = () => {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://localhost:3000/api/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
+      const result = await signIn("credentials", {
+        redirect: false,
+        username,
+        password,
       });
 
-      const data = await res.json();
-
-      if (res.ok) {
-        // Aquí podrías guardar el token si tu backend lo devuelve
-        // localStorage.setItem("token", data.token);
+      if (result?.ok && !result.error) {
         router.push("/dashboard");
       } else {
-        setError(data.message || "Usuario o contraseña incorrectos");
+        setError("Credenciales inválidas.");
       }
     } catch (err) {
       setError("Error del servidor. Inténtalo más tarde.");
@@ -44,8 +39,11 @@ const LoginPage = () => {
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label htmlFor="username" className="block text-sm font-medium text-black">
-              Nombre Usuario : 
+            <label
+              htmlFor="username"
+              className="block text-sm font-medium text-black"
+            >
+              Nombre Usuario :
             </label>
             <input
               type="text"
@@ -58,7 +56,10 @@ const LoginPage = () => {
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-black">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-black"
+            >
               Contraseña
             </label>
             <input

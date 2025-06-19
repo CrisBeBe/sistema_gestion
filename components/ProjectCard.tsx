@@ -1,17 +1,11 @@
 "use client";
 
-import React from "react";
+import { Badge } from "@/components/Badge";
+import { Progress } from "@/components/Progress";
+import { ProjectCardProps } from "@/types/types";
 import { clsx as cn } from "clsx";
-import { Progress } from "@components/Progress";
-import { Badge } from "@components/Badge";
 import { CalendarIcon } from "lucide-react";
-
-interface ProjectCardProps {
-  title: string;
-  status: "activo" | "en proceso" | "completado";
-  progress: number; // de 0 a 100
-  deadline: string; // formato fecha ISO o texto
-}
+import React from "react";
 
 export const ProjectCard: React.FC<ProjectCardProps> = ({
   title,
@@ -48,7 +42,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
 
       <div className="flex items-center gap-2 text-sm text-gray-500">
         <CalendarIcon className="w-4 h-4" />
-        <span>Fecha límite: {deadline}</span>
+        <span>Fecha límite: {deadline.toLocaleDateString()}</span>
       </div>
     </div>
   );
